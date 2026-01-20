@@ -32,6 +32,9 @@ public class MyClient {
 
             Gson gson = new Gson();
             Integer id = null;
+            Integer price = null;
+            Integer qty = null;
+
             while(true){
                 // 요청
                 String keyboardData = keyBuf.readLine();
@@ -64,6 +67,19 @@ public class MyClient {
                     }
                 }
 
+                else if(method.equals("post")){
+                    String name = tokens[1];
+                    price = Integer.parseInt(tokens[2]);
+                    qty = Integer.parseInt(tokens[3]);
+
+                    Map<String, Object> body = new HashMap<>();
+                    body.put("name", name);
+                    body.put("price", price);
+                    body.put("qty", qty);
+
+                    requestDTO = new RequestDTO("post", null, body);
+                }
+
                 // 상품 삭제: delete 1
                 else if(method.equals("delete")){
                     id = Integer.parseInt(tokens[1]);
@@ -82,7 +98,6 @@ public class MyClient {
                 String line = br.readLine();
                 System.out.println(line);
             }
-
 
         } catch (Exception e) {
             e.printStackTrace();

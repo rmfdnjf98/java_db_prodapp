@@ -57,7 +57,7 @@ public class MyServer {
                     ResponseDTO<Product> res;
 
                     try{
-                        Product product = productService.findById(id);
+                        Product product = productService.상품상세(id);
                         res = new ResponseDTO<>("ok", product);
                     } catch (Exception e) {
                         res= new ResponseDTO<>(e.getMessage(), null);
@@ -81,6 +81,29 @@ public class MyServer {
                     } catch (Exception e) {
                         res = new ResponseDTO<>(e.getMessage(), null);
                     }
+                    String resJson = gson.toJson(res);
+                    bw.write(resJson + "\n");
+                    bw.flush();
+                }
+
+                else if("post".equals(requestDTO.getMethod())
+                        && requestDTO.getBody() != null) {
+                    Map<String, Object> body = requestDTO.getBody();
+
+                    String name = (String) body.get("name");
+                    Integer price = ((Number) body.get("price")).intValue();
+
+                    Integer qty = ((Number) body.get("qty")).intValue();
+
+
+                    ResponseDTO<Void> res;
+                    try {
+                        productService.상품등록(name, price, qty);
+                        res = new ResponseDTO<>("ok", null);
+                    } catch (Exception e) {
+                        res = new ResponseDTO<>(e.getMessage(), null);
+                    }
+
                     String resJson = gson.toJson(res);
                     bw.write(resJson + "\n");
                     bw.flush();
